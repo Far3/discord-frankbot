@@ -11,7 +11,9 @@ const app = express();
 
 app.use(keepalive);
 app.get('/', (req, res) => {
-  res.json('This bot should be online! Uptimerobot will keep it alive');
+res.json({
+	'message': 'This bot should be online! Uptimerobot will keep it alive',
+	'uptime robot': 'https://stats.uptimerobot.com/2G0OZTkVwB'
 });
 app.get("/", (request, response) => {
   response.sendStatus(200);
@@ -54,8 +56,7 @@ function checkToSmokeMore(message) {
 		'smoke more',
 		'smoke yet',
 		'smoking yet',
-		'get high',
-		'get higher'
+		'get high'
 	];
 
 	const affermativeMessages = [
@@ -68,7 +69,9 @@ function checkToSmokeMore(message) {
 		'Is the hypotenuse the longest side of a triangle?',
 		'Affirmative',
 		'Is Nate super gay?',
-		'I think Sean woudl approve',
+		'I think Sean would approve',
+		'I think Sean would approve',
+		'I think Sean would approve',
 		'Is a frog\'s ass watertight?'
 	];
 

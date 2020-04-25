@@ -10,6 +10,8 @@ A custom discord bot I built for a server my friends and I play on. It can do th
 
 
 ## Development
+Code: https://github.com/Far3/discord-frankbot
+
 `npm install`
 
 To run in development
@@ -18,6 +20,6 @@ To run in development
 ### Hosting
 TODO: Host video on how to host with glitch + uptime robot combo.
 
-Glitch: https://chocolate-scientific-poinsettia.glitch.me/
+Gitch URL: https://chocolate-scientific-poinsettia.glitch.me/
 
-uptimerobot Eternal monitor: https://stats.uptimerobot.com/2G0OZTkVwB
+Uptimerobot Monitor: https://stats.uptimerobot.com/2G0OZTkVwB
