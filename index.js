@@ -4,6 +4,19 @@ require('dotenv').config();
 const client = new Discord.Client();
 const prefix = process.env.PREFIX;
 
+const express = require('express');
+const keepalive = require('express-glitch-keepalive');
+
+const app = express();
+
+app.use(keepalive);
+app.get('/', (req, res) => {
+  res.json('This bot should be online! Uptimerobot will keep it alive');
+});
+app.get("/", (request, response) => {
+  response.sendStatus(200);
+});
+app.listen(process.env.PORT);
 
 client.once('ready', () => {
 	console.log('Frank Bot is ONLINE!');
@@ -92,7 +105,7 @@ function getRandomDrink(args, message) {
 		let drink = response.drinks[pickRandomNumber]
 		let embed = new Discord.MessageEmbed();
 
-		message.channel.send(`We have ${response.drinks.length} possible recipes and yours is...**${drink.strDrink}**`);
+		message.channel.send(`We have ${response.drinks.length} possible ${args} recipes and yours is...**${drink.strDrink}**`);
 		message.channel.send(embed.setImage(`${drink.strDrinkThumb}`));
 		getIngredients(drink)
 	};
