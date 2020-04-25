@@ -17,7 +17,8 @@ res.json({
 	});
 });
 app.get("/", (request, response) => {
-  response.sendStatus(200);
+	console.log(Date.now() + " Ping Received");
+	response.sendStatus(200);
 });
 app.listen(process.env.PORT);
 
@@ -26,13 +27,17 @@ client.once('ready', () => {
 });
 
 function botCommands(message) {
-	return message.channel.send(
-		`Here are some commands to give FrankBot
-			* !roll: Role a a single die. 1 to 6.
-			* !server: Get server info
-			* !drinkwith (ingredient). Give me a single ingredient and I\'ll find a random drink recpie to make.
-			`
-	);
+
+	const exampleEmbed = new Discord.MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle('Here are some commands to give FrankBot')
+	.addFields(
+		{ name: '!help', value: 'To bring up this menu again.'},
+		{ name: '!server', value: 'Get server info.'},
+		{ name: '!roll', value: 'Role a a single die. 1 to 6.'},
+		{ name: '!drinkwith (ingredient)', value: 'Give me a single ingredient and I\'ll find a random drink recpie to make.'},
+	)
+	message.channel.send(exampleEmbed);
 };
 
 function serverInfo(message) {
