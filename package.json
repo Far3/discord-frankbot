@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "dev": "node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production&&node index.js"
   },
