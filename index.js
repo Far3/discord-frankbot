@@ -1,0 +1,148 @@
+const Discord = require('discord.js');
+const fetch = require('node-fetch');
+require('dotenv').config();
+const client = new Discord.Client();
+const prefix = process.env.PREFIX;
+
+
+client.once('ready', () => {
+	console.log('Frank Bot is ONLINE!');
+});
+
+function botCommands(message) {
+	return message.channel.send(
+		`Here are some commands to give FrankBot
+			* !roll: Role a a single die. 1 to 6.
+			* !server: Get server info
+			* !drinkwith (ingredient). Give me a single ingredient and I\'ll find a random drink recpie to make.
+			`
+	);
+};
+
+function serverInfo(message) {
+	return message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
+}
+
+function checkToSmokeMore(message) {
+
+	let messageContent = message.content.toLowerCase();
+
+	const ingulgentQueries = [
+		'have a drink',
+		'drink more',
+		'drink yet',
+		'get drunk',
+		'have a beer',
+		'drink a beer',
+		'keep drinking',
+		'start drinking',
+		'start smoking',
+		'get stoned',
+		'smoke more',
+		'smoke yet',
+		'smoking yet',
+		'get high',
+		'get higher'
+	];
+
+	const affermativeMessages = [
+		'Yes, you definately should',
+		'Yes!',
+		'You should libate',
+		'Most dfinately',
+		'I don\'t see why not',
+		'Next question please',
+		'Is the hypotenuse the longest side of a triangle?',
+		'Affirmative',
+		'Is Nate super gay?',
+		'I think Sean woudl approve',
+		'Is a frog\'s ass watertight?'
+	];
+
+	let randomAffermativeAnswer = affermativeMessages[Math.floor(Math.random() * affermativeMessages.length)];
+
+	ingulgentQueries.forEach(element => {
+
+		if (messageContent.includes(element)) {
+
+			return message.channel.send(randomAffermativeAnswer);
+		};
+
+	});
+}
+
+function rollDice(message) {
+	return message.channel.send(`:game_die: ${Math.floor(Math.random() * 6) + 1}`);
+}
+
+function getRandomDrink(args, message) {
+	
+	if (!args.length) {
+		return message.channel.send(`You didn't provide any ingredients, ...bitch ass ${message.author}!`);
+	}
+
+	message.channel.send(`Okay ${message.author}...thinking of a drink made with....${args}.`);
+
+	fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${args}`)
+		.then(response => response.json()
+		.then(getDrinks));
+
+	function getDrinks(response) {
+		let pickRandomNumber = Math.floor(Math.random() * response.drinks.length);
+		let drink = response.drinks[pickRandomNumber]
+		let embed = new Discord.MessageEmbed();
+
+		message.channel.send(`We have ${response.drinks.length} possible recipes and yours is...**${drink.strDrink}**`);
+		message.channel.send(embed.setImage(`${drink.strDrinkThumb}`));
+		getIngredients(drink)
+	};
+
+	function getIngredients(drink) {
+		fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drink.idDrink}`)
+			.then(response => response.json()
+			.then(renderIngredients));
+	};
+
+	function renderIngredients(response) {
+		response.drinks.forEach(drink => {
+			message.channel.send(drink.strInstructions);
+
+			const drinkEntries = Object.entries(drink),
+				ingredientsArray = drinkEntries
+					.filter(([key, value]) => key.startsWith("strIngredient") && value && value.trim())
+					.map(([key, value]) => value),
+				measuresArray = drinkEntries
+					.filter(([key, value]) => key.startsWith("strMeasure") && value && value.trim())
+					.map(([key, value]) => value);
+
+			message.channel.send(`Ingredients: ${ingredientsArray}, Measures: ${measuresArray}`);
+		});
+	}
+};
+
+client.on('message', message => {
+
+	checkToSmokeMore(message);
+
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	const args = message.content.slice(prefix.length).split(/ /);
+	const command = args.shift().toLowerCase();
+
+	if (command === 'help') {
+		botCommands(message);
+	}
+
+	if (command === 'server') {
+		serverInfo(message);
+	}
+
+	if (command === 'roll') {
+		rollDice(message)
+	}
+
+	if (command === 'drinkwith') {
+		getRandomDrink(args, message);
+	}
+});
+
+client.login();
