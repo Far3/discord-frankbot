@@ -16,4 +16,8 @@ To run in development
 `npm run dev`
 
 ### Hosting
-Glitch and uptimerobot`
+TODO: Host video on how to host with glitch + uptime robot combo.
+
+Glitch: https://chocolate-scientific-poinsettia.glitch.me/
+
+uptimerobot Eternal monitor: https://stats.uptimerobot.com/2G0OZTkVwB
