@@ -11,13 +11,18 @@ const app = express();
 
 app.use(keepalive);
 app.get('/', (req, res) => {
+	const limit = res.headers.get('x-ratelimit-limit');
+	const remaining = res.headers.get('x-ratelimit-remaining');
+	console.log('limit', limit);
+	console.log('remaining', remaining);
+	console.log(Date.now() + " Ping Received");
+
 res.json({
 	'message': 'This bot should be online! Uptimerobot will keep it alive',
 	'uptime robot': 'https://stats.uptimerobot.com/2G0OZTkVwB'
 	});
 });
 app.get("/", (request, response) => {
-	console.log(Date.now() + " Ping Received");
 	response.sendStatus(200);
 });
 app.listen(process.env.PORT);
@@ -44,9 +49,13 @@ function botCommands(message) {
 
 function serverInfo(message) {
 
+	message.guild.members.fetch().then(fetchedMembers => {
+		const totalOnline = fetchedMembers.filter(member => member.presence.status === 'online');
+		message.channel.send(`There are currently ${totalOnline.size} members online in this guild out of ${fetchedMembers.size}`);
+	});
 
 	return message.channel.send(
-		`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}\nEnvioronment: ${process.env.NODE_ENV}
+		`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}\nEnvironment: ${process.env.NODE_ENV}\nBot uptime: https://stats.uptimerobot.com/2G0OZTkVwB
 	`);
 }
 
