@@ -11,12 +11,6 @@ const app = express();
 
 app.use(keepalive);
 app.get('/', (req, res) => {
-	const limit = res.headers.get('x-ratelimit-limit');
-	const remaining = res.headers.get('x-ratelimit-remaining');
-	console.log('limit', limit);
-	console.log('remaining', remaining);
-	console.log(Date.now() + " Ping Received");
-
 res.json({
 	'message': 'This bot should be online! Uptimerobot will keep it alive',
 	'uptime robot': 'https://stats.uptimerobot.com/2G0OZTkVwB'
