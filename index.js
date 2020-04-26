@@ -33,10 +33,12 @@ function botCommands(message) {
 	.setTitle('Here are some commands to give FrankBot')
 	.addFields(
 		{ name: '!help', value: 'To bring up this menu again.'},
-		{ name: '!server', value: 'Get server info.'},
-		{ name: '!roll', value: 'Role a a single die. 1 to 6.'},
+		{ name: '@FrankBot Can I have a drink/smoke more/keep drinking? etc?', value: 'It will give you a qualified answer.'},
 		{ name: '!drinkwith (ingredient)', value: 'Give me a single ingredient and I\'ll find a random drink recpie to make.'},
-	)
+		{ name: '!roll', value: 'Role a a single die. 1 to 6.'},
+		{ name: '!server', value: 'Get server info.'},
+
+		)
 	message.channel.send(exampleEmbed);
 };
 
@@ -118,17 +120,19 @@ function getRandomDrink(args, message) {
 
 	fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${args}`)
 		.then(response => response.json()
-		.catch(err => message.channel.send(`Sorry we don\'t have any drinks with that ${err}`))
+		.catch(err => message.channel.send(`Sorry we don\'t have any drinks with ${args}. Try another ingredient with no spaces.`))
 		.then(getDrinks));
 
 	function getDrinks(response) {
-		let pickRandomNumber = Math.floor(Math.random() * response.drinks.length);
-		let drink = response.drinks[pickRandomNumber]
-		let embed = new Discord.MessageEmbed();
-
-		message.channel.send(`We have ${response.drinks.length} possible ${args} recipes and yours is...**${drink.strDrink}**`);
-		message.channel.send(embed.setImage(`${drink.strDrinkThumb}`));
-		getIngredients(drink)
+		if (response.drinks && response.drinks.length) {
+			let pickRandomNumber = Math.floor(Math.random() * response.drinks.length);
+			let drink = response.drinks[pickRandomNumber]
+			let embed = new Discord.MessageEmbed();
+	
+			message.channel.send(`We have ${response.drinks.length} possible ${args} recipes and yours is...**${drink.strDrink}**`);
+			message.channel.send(embed.setImage(`${drink.strDrinkThumb}`));
+			getIngredients(drink)
+		}
 	};
 
 	function getIngredients(drink) {
