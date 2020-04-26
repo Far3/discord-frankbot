@@ -41,7 +41,11 @@ function botCommands(message) {
 };
 
 function serverInfo(message) {
-	return message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
+
+
+	return message.channel.send(
+		`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}\nEnvioronment: ${process.env.NODE_ENV}
+	`);
 }
 
 function checkToSmokeMore(message) {
@@ -97,6 +101,13 @@ function rollDice(message) {
 	return message.channel.send(`:game_die: ${Math.floor(Math.random() * 6) + 1}`);
 }
 
+function handleErrors(response) {
+	const jsonIsed = response.json();
+	console.log('response length', jsonIsed);
+
+	return response;
+}
+
 function getRandomDrink(args, message) {
 	
 	if (!args.length) {
@@ -107,6 +118,7 @@ function getRandomDrink(args, message) {
 
 	fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${args}`)
 		.then(response => response.json()
+		.catch(err => message.channel.send(`Sorry we don\'t have any drinks with that ${err}`))
 		.then(getDrinks));
 
 	function getDrinks(response) {
@@ -144,7 +156,9 @@ function getRandomDrink(args, message) {
 
 client.on('message', message => {
 
-	checkToSmokeMore(message);
+	if (message.content.includes('703028698214957147')) {
+		checkToSmokeMore(message);
+	}
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 	const args = message.content.slice(prefix.length).split(/ /);
