@@ -3,10 +3,8 @@ const fetch = require('node-fetch');
 require('dotenv').config();
 const client = new Discord.Client();
 const prefix = process.env.PREFIX;
-
 const express = require('express');
 const keepalive = require('express-glitch-keepalive');
-
 const app = express();
 
 app.use(keepalive);
@@ -54,7 +52,6 @@ function serverInfo(message) {
 }
 
 function checkToSmokeMore(message) {
-
 	let messageContent = message.content.toLowerCase();
 
 	const ingulgentQueries = [
@@ -106,15 +103,7 @@ function rollDice(message) {
 	return message.channel.send(`:game_die: ${Math.floor(Math.random() * 6) + 1}`);
 }
 
-function handleErrors(response) {
-	const jsonIsed = response.json();
-	console.log('response length', jsonIsed);
-
-	return response;
-}
-
 function getRandomDrink(args, message) {
-	
 	if (!args.length) {
 		return message.channel.send(`You didn't provide any ingredients, ...bitch ass ${message.author}!`);
 	}
