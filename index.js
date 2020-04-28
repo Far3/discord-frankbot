@@ -4,7 +4,6 @@ const client = new Discord.Client();
 const prefix = process.env.PREFIX;
 const botCommands = require('./methods/botCommands');
 const keepUptime = require('./methods/keepGlitchServerUptime');
-
 keepUptime;
 
 client.once('ready', () => {
