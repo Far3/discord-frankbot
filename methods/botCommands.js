@@ -85,7 +85,7 @@ function rollDice(message) {
 
 function getRandomDrink(args, message) {
 	if (!args.length) {
-		return message.channel.send(`You didn't provide any ingredients, ...bitch ass ${message.author}!`);
+		return message.channel.send(`You didn't provide any ingredients...bitch ass ${message.author}! Try again ex. !drinkwith vodka`);
 	}
 
 	message.channel.send(`Okay ${message.author}...thinking of a drink made with....${args}.`);
