@@ -92,7 +92,7 @@ function getRandomDrink(args, message) {
 
 	fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${args}`)
 		.then(response => response.json()
-		.catch(err => message.channel.send(`Sorry we don\'t have any drinks with ${args}. Try another ingredient with no spaces.`))
+		.catch(err => message.channel.send(`Sorry we don\'t have any drinks with ${args}. Try another ingredient with no spaces. ex. !drinkwith gin`))
 		.then(getDrinks));
 
 	function getDrinks(response) {
